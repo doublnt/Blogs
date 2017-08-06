@@ -74,4 +74,10 @@ CSS常用小技巧
    border-radius: 50% 50% 50% 50%;
    ```
 
+6. 将textarea 中的 \n 转换成 br 
+
+   ```javascript
+   $('.'+contentAttr+'').html(value.replace(/\r?\n/g,'<br/>'));
+   ```
+
    ​
