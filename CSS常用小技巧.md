@@ -81,3 +81,13 @@ CSS常用小技巧
    ```
 
    ​
+
+7. ​
+
+   ```javascript
+   $(function() { ... });
+
+   is just jQuery short-hand for 
+
+   $(document).ready(function() { ... });
+   ```
