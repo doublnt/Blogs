@@ -1,5 +1,99 @@
 ### TF-IDF In Scikit-Learn
 
+#### 2017年9月30日补充
+
+&emsp; 其实在算下面TF-IDF的步骤之前，还有一步，就是计算Term Frequency 也就是词频。当然，scikit-learn 中也提供了计算词频的包。
+
+`CountVectorizer` 位于 `sklearn.feature_extraction.text `中
+
+下面以一个小Demo 来演示计算
+
+```python
+>>> from sklearn.feature_extraction.text import CountVectorizer   
+>>> countVectorizer = CountVectorizer()
+>>> countVectorizer
+CountVectorizer(analyzer='word', binary=False, decode_error='strict',
+        dtype=<class 'numpy.int64'>, encoding='utf-8', input='content',
+        lowercase=True, max_df=1.0, max_features=None, min_df=1,
+        ngram_range=(1, 1), preprocessor=None, stop_words=None,
+        strip_accents=None, token_pattern='(?u)\\b\\w\\w+\\b',
+        tokenizer=None, vocabulary=None)
+>>> corpus
+['This is the first document.', 'This is the second second document.', 'And the third one.', 'Is this the first document?']
+>>> X = countVectorizer.fit_transform(corpus)
+>>> X
+<4x9 sparse matrix of type '<class 'numpy.int64'>'
+	with 19 stored elements in Compressed Sparse Row format>
+>>> X.toarray()
+array([[0, 1, 1, 1, 0, 0, 1, 0, 1],
+       [0, 1, 0, 1, 0, 2, 1, 0, 1],
+       [1, 0, 0, 0, 1, 0, 1, 1, 0],
+       [0, 1, 1, 1, 0, 0, 1, 0, 1]], dtype=int64)
+```
+
+上面呢就计算好了，接下来我们需要知道的是该文本集中所有的 tokenizing ，
+
+```python
+>>> countVectorizer.get_feature_names()
+['and', 'document', 'first', 'is', 'one', 'second', 'the', 'third', 'this']
+```
+
+下面解释一下上面那个X矩阵表示的意思，
+
+`[0, 1, 1, 1, 0, 0, 1, 0, 1] `表示
+
+第一行文本
+
+`This is the first document.` 中 `and` 出现的次数为 0 `document` 出现的次数为 1 ，以此类推。
+
+算出来这个后，后面就可以继续计算 TF-IDF 了。
+
+```python
+>>> from sklearn.feature_extraction.text import TfidfTransformer
+>>> transformer = TfidfTransformer()
+>>> tfidf = transformer.fit_transform(X)
+>>> tfidf
+<4x9 sparse matrix of type '<class 'numpy.float64'>'
+	with 19 stored elements in Compressed Sparse Row format>
+>>> tfidf.toarray()
+array([[ 0.        ,  0.43877674,  0.54197657,  0.43877674,  0.        ,
+         0.        ,  0.35872874,  0.        ,  0.43877674],
+       [ 0.        ,  0.27230147,  0.        ,  0.27230147,  0.        ,
+         0.85322574,  0.22262429,  0.        ,  0.27230147],
+       [ 0.55280532,  0.        ,  0.        ,  0.        ,  0.55280532,
+         0.        ,  0.28847675,  0.55280532,  0.        ],
+       [ 0.        ,  0.43877674,  0.54197657,  0.43877674,  0.        ,
+         0.        ,  0.35872874,  0.        ,  0.43877674]])
+```
+
+还有一个包叫做TfidfVectorizer 囊括了包括 CountVectorizer 和 TfidfTransformer 所以呢，我们可以用下面更加简便的方法。
+
+```python
+>>> vectorizer
+TfidfVectorizer(analyzer='word', binary=False, decode_error='strict',
+        dtype=<class 'numpy.int64'>, encoding='utf-8', input='content',
+        lowercase=True, max_df=1.0, max_features=None, min_df=1,
+        ngram_range=(1, 1), norm='l2', preprocessor=None, smooth_idf=True,
+        stop_words=None, strip_accents=None, sublinear_tf=False,
+        token_pattern='(?u)\\b\\w\\w+\\b', tokenizer=None, use_idf=True,
+        vocabulary=None)
+>>> vectorizer.fit_transform(corpus)
+<4x9 sparse matrix of type '<class 'numpy.float64'>'
+	with 19 stored elements in Compressed Sparse Row format>
+>>> vectorizer.fit_transform(corpus).toarray()
+array([[ 0.        ,  0.43877674,  0.54197657,  0.43877674,  0.        ,
+         0.        ,  0.35872874,  0.        ,  0.43877674],
+       [ 0.        ,  0.27230147,  0.        ,  0.27230147,  0.        ,
+         0.85322574,  0.22262429,  0.        ,  0.27230147],
+       [ 0.55280532,  0.        ,  0.        ,  0.        ,  0.55280532,
+         0.        ,  0.28847675,  0.55280532,  0.        ],
+       [ 0.        ,  0.43877674,  0.54197657,  0.43877674,  0.        ,
+         0.        ,  0.35872874,  0.        ,  0.43877674]])
+>>> 
+```
+
+结果和上面的是一样的。
+
 #### Text Feature Extraction
 
 &emsp;首先是`Scikit-learn`特征提取中的文本特征提取的一段介绍。
