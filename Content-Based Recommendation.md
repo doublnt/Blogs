@@ -69,7 +69,11 @@ array([[ 0.        ,  0.43877674,  0.54197657,  0.43877674,  0.        ,
 还有一个包叫做TfidfVectorizer 囊括了包括 CountVectorizer 和 TfidfTransformer 所以呢，我们可以用下面更加简便的方法。
 
 ```python
->>> vectorizer
+>>>
+$$
+E = mc^2
+$$
+ vectorizer
 TfidfVectorizer(analyzer='word', binary=False, decode_error='strict',
         dtype=<class 'numpy.int64'>, encoding='utf-8', input='content',
         lowercase=True, max_df=1.0, max_features=None, min_df=1,
