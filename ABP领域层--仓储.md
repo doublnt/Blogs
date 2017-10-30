@@ -50,7 +50,7 @@ public interface IPersonRepository : IRepository<Person, long>
 
 ---
 
- ***取得单一实体：**
+ **取得单一实体：**
 
 ```C#
 TEntity Get(TPrimaryKey id);
