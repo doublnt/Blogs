@@ -10,3 +10,5 @@ Linux 常用命令记录
    >
    > http://harttle.com/2016/08/08/vim-search-in-file.html
 
+
+重命名文件夹 mv Repository Repository.Interface
