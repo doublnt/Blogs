@@ -1,4 +1,6 @@
-### Git 中的一些问题
+# Git 中的一些问题
+
+## 把本地新项目推送至 Github
 
 在把本地新项目推送至`GitHub`仓库时的大致流程和步骤，首先现在`GitHub`上面新建一个项目，复制该项目的 带`.git` 后缀的地址，比如
 
@@ -36,3 +38,15 @@ fatal: refusing to merge unrelated histories
 然后就可以直接 push 了
 
 `git push origin master`
+
+## 如何跳转到指定的 commit 
+
+&emsp; 问题描述： 比如我觉得当前分支可能不适合线上的，那么我需要来一个更加安全的分支？
+
+实现： 
+
+```bash
+git checkout -b new-branch commitId
+```
+
+对 指定的CommitId 创建新分支。
