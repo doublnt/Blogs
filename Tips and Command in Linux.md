@@ -12,3 +12,12 @@ Linux 常用命令记录
 
 
 重命名文件夹 mv Repository Repository.Interface
+
+2.重启服务器
+
+```shell
+sudo ssh root@dev_name
+reboot
+sudo reboot
+```
+
