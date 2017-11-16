@@ -91,3 +91,23 @@ CSS常用小技巧
 
    $(document).ready(function() { ... });
    ```
+
+
+
+8. 在页面中直接使用Css
+
+   >```css
+   ><style media="screen" type="text/css">
+   >
+   >Add style rules here
+   >
+   ></style>
+   >```
+
+   ​
+
+9. 在Razor page 中将时间格式转换
+
+   > ```html
+   > <span class="repu-time">@repu.DateAdded.ToString("yyyy/MM/dd")</span>
+   > ```
