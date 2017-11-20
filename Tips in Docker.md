@@ -8,3 +8,14 @@
 
 &emsp;通过 `sudo service docker restart` 命令
 
+**开发集群故障时重启服务器的办法**
+
+```shell
+sudo ssh root@dev-server-swarm
+reboot
+sudo reboot
+
+```
+
+
+
