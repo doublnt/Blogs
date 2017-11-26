@@ -17,5 +17,5 @@ sudo reboot
 
 ```
 
-
+docker service log -t  - - raw  service_name 
 
