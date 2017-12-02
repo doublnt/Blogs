@@ -34,7 +34,7 @@ git clone http://github.com/xx myName
 
 ```shell
 git diff --cached
-git diff --staged
+git diff --staged //Same command
 ```
 
 ## 移除文件
@@ -56,6 +56,7 @@ git log
 git log -p //显示每次提交的内容差异
 git log --stat  //显示每次提交的简略的统计信息
 git log --pretty=format:"%h - %an, %ar : %s"
+git log --pretty=oneline / short /full/fuller
 ```
 
 ![](https://ws4.sinaimg.cn/large/006tKfTcgy1flsbltblz6j312g16mk0g.jpg)
@@ -97,6 +98,7 @@ git checkout -- <file> //取消对一个未加入暂存区文件的修改
 添加一个远程仓库
 git remote add <shortname> <url>
 git remote add pb https://github.com/paulboone/ticgit
+git remote -v
 
 从远程仓库抓取与拉取
 
@@ -109,7 +111,7 @@ git push [remote-name] [branch-name]
 查看远程仓库
 git remote show [remote-name]
 
-远程仓库的移除与重命名
+--远程仓库的移除与重命名--
 git remote rename <originName> <afterName>
 
 git remote rm <remote-name>
@@ -144,10 +146,10 @@ git tag v1.4-lw
 ### 给以前的提交打标签
 
 ```shell
-git tag -a v1.2 9fsdfdasfa  某个提交的校验和的值
+git tag -a v1.2 [9fsdfdasfa]  某个提交的校验和的值
 ```
 
-### 推送标签
+### 推送标签 
 
 ```shell
 git push origin v1.2 推送指定标签
@@ -159,3 +161,51 @@ git checkout -b [branchname] [tagname]
 git checkout -b version2 v3.3.0
 ```
 
+## 分支
+
+查看各个分支所指的当前对象
+
+```shell
+git log --oneline --decorate
+```
+
+> ![](https://ws2.sinaimg.cn/large/006tNc79gy1flwlwbwdqaj30r607kdhm.jpg)
+
+```shell
+git log --oneline --decorate --graph --all //输出你的提交历史，各个分支的指向，以及项目分支分叉的情况
+```
+
+```shell
+git merge [branchname] 把 branchname 合并到当前分支
+```
+
+### 遇到冲突时分支的合并
+
+> ![](https://ws2.sinaimg.cn/large/006tNc79gy1flwn3ti404j30vs0eeada.jpg)
+
+任何因包含合并冲突而有待解决的文件，都会以未合并状态标识出来。 Git 会在有冲突的文件中加入标准的冲突解决标记，这样你可以打开这些包含冲突的文件然后手动解决冲突。 出现冲突的文件会包含一些特殊区段，看起来像下面这个样子：
+
+```bash
+<<<<<<< HEAD:index.html <div id="footer">contact : email.support@github.com</div> ======= <div id="footer">  please contact us at support@github.com </div> >>>>>>> iss53:index.html 
+```
+
+> ![](https://ws3.sinaimg.cn/large/006tNc79gy1flwn4dm26jj30qm076758.jpg)
+
+这表示   HEAD  所指示的版本（也就是你的   master  分支所在的位置，因为你在运行 merge 命令的时候已经检出到了这个分支）在这个区段的上半部分（  =======  的上半部分），而  所要合并分支所指示的版本在   =======  的下半部分。 为了解决冲突，你必须选择使用由  =======  分割的两部分中的一个，或者你也可以自行合并这些内容。 例如，你可以通过把这段内容换成下面的样子来解决冲突：
+
+> ![](https://ws2.sinaimg.cn/large/006tNc79gy1flwn7zy99dj30v404g3z4.jpg)
+
+### 查看每一个分支的最后一次提交
+
+```shell
+git branch -v 
+
+git branch --merged / --no-merged  查看已经合并或者未合并的分支
+
+
+git branch -d / -D(强制删除)
+```
+
+### Origin 并无特殊含义
+
+远程仓库名字   origin 与分支名字  master 一样，在 Git 中并没有任何特别的含义一样。 同时   master 是当你运行 git init 时默认的起始分支名字，原因仅仅是它的广泛使用， origin  是当你运行   git clone  时默认的远程仓库名字。 如果你运行   git clone -o booyah ，那么你默认的远程分支名字将会是   booyah/master 。
