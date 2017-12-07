@@ -19,3 +19,5 @@ sudo reboot
 
 docker service logs -t  - - raw  service_name 
 
+docker service update --rollback openapi_api 回滚到上一个镜像的版本
+
