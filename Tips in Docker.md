@@ -21,3 +21,6 @@ docker service logs -t  - - raw  service_name
 
 docker service update --rollback openapi_api 回滚到上一个镜像的版本
 
+出现"The swarm does not have a leader"，可以等一会，看能否自动恢复
+
+如果 docker stack ps 发现"Unable to complete atomic operation, key modified"错误，一般都需要重启服务器
