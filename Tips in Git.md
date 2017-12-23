@@ -44,29 +44,51 @@ git diff --staged //Same command
 另外一种情况是，我们想把文件从 Git 仓库中删除（亦即从暂存区域移除），但仍然希望保留在当前工作目录中。 换句话说，你想让文件保留在磁盘，但是并不想让 Git 继续跟踪。 当你忘记添加   .gitignore  文件，不小心把一个很大的日志文件或一堆   .a  这样的编译生成文件添加到暂存区时，这一做法尤其有用。 为达到这一目的，使用   --cached  选项
 
 ```shell
-git rm --cached deleteName
+git rm --cached fileName
 ```
 
 > ![](https://ws1.sinaimg.cn/large/006tNc79gy1flr6m9gerjj30ss0d276m.jpg)
 
+## 移除在仓库中的文件夹，但不删除
+
+比如我要移除以前以及提交到 仓库的 bundles 文件夹，但是本地并不删除它。使用
+
+```shell
+git rm -r --cached myFolder
+```
+
+## 对文件修改命名
+
+```shell
+git mv originName currentName
+```
+
 ## 查看文件提交历史
+
+### git log  常用选项
 
 ```shell
 git log
 git log -p //显示每次提交的内容差异
 git log --stat  //显示每次提交的简略的统计信息
+git log --pretty //指定使用不同于默认格式的方式提交历史。
 git log --pretty=format:"%h - %an, %ar : %s"
-git log --pretty=oneline / short /full/fuller
+git log --pretty=oneline / short /full/fuller // oneline 表示将每个提交放在一行内显示
+git log --graph //改选项表示添加了一些ASCII 字符串来形象的展示你的分支、合并历史。
+git log --grep "robert" //用来查找提交内容包含 robert 的提交
+git log --abrev-commit 显示 SHA-1 的7个字符
 ```
 
 ![](https://ws4.sinaimg.cn/large/006tKfTcgy1flsbltblz6j312g16mk0g.jpg)
 
 ![](https://ws4.sinaimg.cn/large/006tKfTcgy1flsbpozgh2j312k0tk7cw.jpg)
 
-限制输出长度
+> ![](https://ws4.sinaimg.cn/large/006tNbRwgy1fmqmy8rjzuj31km09o46q.jpg)
+
+### 限制输出长度
 
 ```shell
-git log --sine=2.weeks
+git log --sine=2.weeks //2可以修改
 git log -<n> 显示 前 n 条提交
 git log --author 指定作者的提交
 git log -SFunctionName 可以列出那些添加或移除了某些字符串的提交
@@ -90,28 +112,31 @@ git commit --amend //由于commit 信息写错，好像经常用
 git reset HEAD <file>
 
 git checkout -- <file> //取消对一个未加入暂存区文件的修改
+git checkout -- robert.md
 ```
+
+![](https://ws4.sinaimg.cn/large/006tNbRwgy1fmqn5354gcj31j208kjyd.jpg)
 
 ## 远程仓库
 
 ```shell
 添加一个远程仓库
 git remote add <shortname> <url>
-git remote add pb https://github.com/paulboone/ticgit
+git remote add pb https://github.com/paulboone/ticgit //添加一个远程仓库并命名为 pb
 git remote -v
 
 从远程仓库抓取与拉取
-
 git fetch [remote-name] //git fetch origin
-
 
 git push [remote-name] [branch-name]
 
-
 查看远程仓库
 git remote show [remote-name]
+```
 
---远程仓库的移除与重命名--
+### 远程仓库的移除与重命名
+
+```shell
 git remote rename <originName> <afterName>
 
 git remote rm <remote-name>
@@ -163,10 +188,14 @@ git checkout -b version2 v3.3.0
 
 ## 分支
 
+> * 文件保存为 blob对象（保存为文件快照）
+> * 一个树对象（记录目录结构和blob对象索引）
+> * 一个提交对象（包含着向前述树对象的指针和所有提交信息）
+
 查看各个分支所指的当前对象
 
 ```shell
-git log --oneline --decorate
+git log --oneline --decorate //--decorate 查看各个分支当前所指的对象
 ```
 
 > ![](https://ws2.sinaimg.cn/large/006tNc79gy1flwlwbwdqaj30r607kdhm.jpg)
@@ -195,6 +224,20 @@ git merge [branchname] 把 branchname 合并到当前分支
 
 > ![](https://ws2.sinaimg.cn/large/006tNc79gy1flwn7zy99dj30v404g3z4.jpg)
 
+> `git push origin serverfix`
+>
+> ![](https://ws3.sinaimg.cn/large/006tNbRwgy1fmqo4pbwezj31j40aathx.jpg)
+>
+> 或者可以将本地的分支 serverfix 推送到远程的 remotemaster 分支上
+>
+> `git push origin serverfix:remotemaster`
+
+### 跟踪分支
+
+```shell
+git checkout --track origin/serverfix //将当前分支设置跟踪分支，用来 fetch 时的拉取数据
+```
+
 ### 查看每一个分支的最后一次提交
 
 ```shell
@@ -210,11 +253,274 @@ git branch -d / -D(强制删除)
 
 远程仓库名字   origin 与分支名字  master 一样，在 Git 中并没有任何特别的含义一样。 同时   master 是当你运行 git init 时默认的起始分支名字，原因仅仅是它的广泛使用， origin  是当你运行   git clone  时默认的远程仓库名字。 如果你运行   git clone -o booyah ，那么你默认的远程分支名字将会是   booyah/master 。
 
-
-
 ### 分支重命名
 
 ```shell
 git branch -m old_branch new_branch
 ```
+
+### 删除远程分支
+
+```shell
+git push origin --delete [branchName]
+```
+
+
+
+## 会丢弃暂存的情况
+
+在当前分支（branch1）上，删除了文件的话，如果没有加入暂存，如果你使用 git checkout branch 跳到另一个分支，当你在跳回来时发现这个删除并没有起作用。
+
+## 用户名邮箱配置
+
+最开始使用Git时，需要配置用户名及其邮箱
+
+```shell
+git config --global user.name "Robert"
+git config --global user.email robert@cnblogs.com
+```
+
+## 变基
+
+主要是 merge 和 rebase的一些操作
+
+![](https://ws4.sinaimg.cn/large/006tNbRwgy1fmqotdizs4j31fm0oc7ay.jpg)
+
+### Merge
+
+merge 的基本原理：会把`两个分支的最新快照（C3 和 C4）`和以及`两者最近的共同祖先(C2)`进行`三方合并`，合并的结果是生成一个新的快照，并提交。
+
+### Rebase
+
+提取在C4 中引入的补丁和修改，然后在C3 的基础上再应用一次。可以使用 `rebase` 命令将提交到某一分支上的所有修改都移至另一分支。
+
+对于上面的例子：
+
+```shell
+git checkout experiment
+git rebase master
+
+然后再
+git checkout master
+git merge experiment
+```
+
+## 分布式 Git
+
+### 提交准则
+
+```shell
+git diff --check //找到所有的空白错误，并把它列出来。
+```
+
+## Git中的一些工具
+
+### 查看分支引用
+
+```shell
+git show commitId/branchName // 比如 git show master
+
+git rev-parse branchName // git rev-parse master 查看master 分支对应的SHA-1 的值
+```
+
+> ![](https://ws2.sinaimg.cn/large/006tNbRwgy1fmqpv4qqolj30vw0dmgo1.jpg)
+
+### 查看祖先引用
+
+`^` 符号 使用`HEAD^` 查看HEAD 的父提交
+
+`HEAD^n`表示 HEAD的第n个提交
+
+
+
+`~` 符号，`HEAD~` 与 `HEAD^` 是等价的，区别在于后面加数字。
+
+`HEAD~2` 表示第一父提交的第一父提交。与 `HEAD^^` 等价
+
+### 提交区间
+
+`..`双点符号，可以让Git选出在一个分支而不在另一个分支上的提交。
+
+```shell
+git log master..experiment //在 experiment 分支中而不在master 分支上的。
+
+git log master.. //如果留空 git 会自动使用HEAD 来替代
+```
+
+`^` 和 `--not`
+
+下面的命令和上面的等价
+
+```shell
+git log ^master experiment
+
+git log experiment --not master
+```
+
+也可以用在两个分支以上，比如
+
+```shell
+git log refA refB ^refC //查看在refA,refB 中，但是不在refC中的提交
+```
+
+`…` 三点符号，选出被两个引用中的一个包含但又不被两者同时包含的提交。
+
+可以添加 `--left-right` 来表示在哪个分支上，
+
+> ![](https://ws3.sinaimg.cn/large/006tNbRwgy1fmqqk6awzcj30v60ketc8.jpg)
+
+### 暂存 Git Stash
+
+默认情况下，`git stash ` 只会储存已经在索引中的文件。如果指定了  `--include-untracked` 或者`-u` 标记，则会把未创建跟踪的数据也储存起来。		
+
+```shell
+git stash --include-untracked
+```
+
+为当前储存创建一个分支
+
+```shell
+git stash branch branchName
+```
+
+### 搜索
+
+`git grep` 命令，从提交历史或工作目录中查找一个字符串或正则表达式，可以添加 `-n` 来查找输出匹配的行号。
+
+```shell
+git grep -n test
+```
+
+`--count` ,来输出哪些文件包含匹配以及每个文件包含了多少个匹配。
+
+`-p` 查看匹配的行属于哪一个方法或者函数
+
+`--break` ,`--heading` ,使输出更容易阅读。
+
+### Git 日志搜索
+
+比如想要查看 TEST常量是什么时候引入的，可以使用`-S`
+
+```shell
+git log -STEST --oneline
+```
+
+#### 行日志搜索
+
+假如想查看zlib.c 文件中 git_test 函数的每一次变更，可以执行`git log -L :git_test:zlib.c`
+
+```shell
+git log -L :git_test:zlib.c
+```
+
+### 修改多个提交历史
+
+通过 `git rebase -i ` 进行交互式变基
+
+```shell
+git rebase -i HEAD~3 // 尝试修改最后3次提交，实际上制定了以前的 4次。
+```
+
+使用 交互式变基，这些提交的顺序是相反的。
+
+### filter-branch
+
+#### 从每一个提交移除一个文件
+
+```shell
+git fliter-branch --tree-filter 'rm -f password.txt' HEAD //从整个提交历史移除一个 password.txt 文件
+```
+
+`--tree-filter` 选项在检出项目的每一个提交后运行指定的命令然后重新提交结果。
+
+```shell
+git fliter-branch --tree-filter 'rm -f *~' HEAD // 移除所有偶然提交的编辑器备份文件
+```
+
+`--all` 选项，让filter-branch 在所有分支上运行。
+
+#### 全局修改邮箱
+
+> ![](https://ws3.sinaimg.cn/large/006tNbRwgy1fmqrmsnfz3j310k0o27go.jpg)
+
+### 重置 Reset、Checkout
+
+#### 三棵树
+
+`HEAD`  ：上一次提交的快照，下一次提交的父节点
+
+`INDEX` : 预期的下一次提交的快照
+
+`Worrking Directory` : 沙盒
+
+#### 理解 git reset
+
+`reset`做的第一件事就是移动 HEAD 的指向。（而checkout 所做的是改变HEAD 自身）,
+
+【移动HEAD】如果后面添加了`--soft`。那么它做的就仅仅是移动了HEAD的指向。本质上是撤消了上一次`git commit` 命令。
+
+【更新索引】如果后面添加了`--mixed` ，则`reset` 所做的事情就到此为止了，这也是`git reset` 的默认行为。它会撤销提交，并且撤销暂存。
+
+【更新工作目录】如果使用了`--hard` 选项，它将会继续这步。这个操作会强制覆盖你工作目录中的文件，如果该文件未提交，则会导致文件无法恢复。
+
+`git reset file.txt` 的真正含义，当你使用
+
+`git add file.txt` 时下面的建议命令。其实这个`reset` 命令是`git reset --mixed HEAD file.txt` 的简写形式，
+
+* 移动HEAD 
+* 让索引看起来像HEAD。
+
+### 撤销合并
+
+两种方式来修复
+
+**修复引用**
+
+如果这个不想要的合并提交只存在于你的本地仓库中，最简单且最好的解决方案是移动分支到你想要它指向的地方。大多数情况下，如果你在错误的 `gir merge` 后运行`git reset --head HEAD~` 这个重置分支指向。这个方法的缺点是它会重写历史，在一个共享的仓库中这会造成问题。*简单的说，如果其他人已经有你将要重写的提交，你应该避免使用`reset`*。
+
+**还原提交**
+
+Git 给你一个生成一个新提交的选项，提交将会撤销一个已存在提交的所有修改。Git中成为**还原**。
+
+```shell
+git revert -m 1 HEAD
+```
+
+`-m 1` 标记指出 `mainline` 需要被保留下来的父结点，这时会创建一个新提交 比如`^m` 与之前的master 有同样的内容。
+
+> ![](https://ws3.sinaimg.cn/large/006tNbRwgy1fmqt7ejhghj31080gwq9e.jpg)
+
+如果你在 master 分支上，使用 `git merge topic`  发现Already up-to-date.
+
+更糟糕的是如果你在 `topic`分支上 继续提交，增加内容的话。当你要合并 topic 分支时，你发现，只合并了被还原合并之后的修改，如下图所示：
+
+> ![](https://ws1.sinaimg.cn/large/006tNbRwgy1fmqtcirvgvj31060ccdio.jpg)
+
+解决这个方式最好的方式，还是插销还原原始的合并，
+
+```shell
+git revert ^M
+
+git merge topic
+```
+
+操作后的图如下图所示：
+
+> ![](https://ws3.sinaimg.cn/large/006tNbRwgy1fmqtec8nzbj30zm0f4jwh.jpg)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
