@@ -1,4 +1,4 @@
-##  	Simple Linear Regression with Scikit Learn
+##  	Linear Regression with Scikit Learn
 
 ## Before you read
 
@@ -72,13 +72,13 @@ The Simple Linear Regression define:
 
 The Simple Linear Regression model that scikit-learn use is below:
 
-> $y = alpha + beta * x$
+> $y = \alpha + \beta * x$
 
  $y$  is the predicted value of the response variable. $x$ is the explanatory variable. $alpha$ and $beta$ are learned by the learning algorithm.
 
-If we have a data $X2$ like that,
+If we have a data $X_{2}$ like that,
 
-> X2 = [[0], [10], [14], [25]]
+> $X_{2}$ = [[0], [10], [14], [25]]
 
 We want to use Linear Regression to Predict the Prize Price and Print the Figure. There are two steps:
 
@@ -209,4 +209,3 @@ We can solve $\alpha$ as the following formula:
 The Regression formula is like following:
 
 > $y = 1.9655 + 0.9762 * x$
-
