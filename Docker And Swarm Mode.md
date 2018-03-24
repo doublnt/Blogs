@@ -77,7 +77,21 @@ done
 
 关于这个Reachable是什么意思呢？当我们现在的node2 节点由于某种原因挂了，或者停止了，那么在node1和node3中就会自动选择一个当作leader，然后等node2恢复后，就变成了Reachable状态了。
 
+使用 `docker-machine stop node1` 来停止节点
 
+#### Service
+
+&nbsp;有了上面关于的那些基础设施后，接下来可以了解Service了，在了解早起爱你，我们先来说说Node,个人感觉node就像一台服务器一样，然后加入到Swarm里面，一堆的node然后就可以组建成一个Swarm。
+
+> A node is an instance of Docker Engine participating in a swarm.
+
+在Swarm里面，node 有两种形式，一种是 worker，另一种是manager。woker的权限就少的有点可怜了，连`docker service ls` 都看不了。
+
+&nbsp;说起Service服务，首先它是跑在node上面的，我觉得吧它就像比如一个应用，比如登陆站点服务。
+
+> A service is the definition of the tasks to execute on the worker nodes. It is the central structure of the swarm system and the primary root of user interaction with the swarm.
+
+> ![](https://ws2.sinaimg.cn/large/006tKfTcgy1fplx6bnzhej31jk06qwfu.jpg)
 
 
 
