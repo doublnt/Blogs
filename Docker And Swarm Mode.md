@@ -145,11 +145,11 @@ done
 
 > 当镜像是存储在私人Registry上时，这需要 login 然后deploy时加上`--with-registry-auth` 命令
 >
-> `docker login registry.example.com``
+> `docker login registry.example.com`
 >
-> ``docker stack deploy --with-registry-auth -c docker-compose.yml appName` 
+> `docker stack deploy --with-registry-auth -c docker-compose.yml appName` 
 
-
+> ![](https://ws1.sinaimg.cn/large/006tNc79gy1fpr749p9kij31kw0zsjy9.jpg)
 
 
 
