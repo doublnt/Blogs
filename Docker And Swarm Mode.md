@@ -93,15 +93,61 @@ done
 
 > ![](https://ws2.sinaimg.cn/large/006tKfTcgy1fplx6bnzhej31jk06qwfu.jpg)
 
+> Services are really just “containers in production.” A service only runs one image, but it codifies the way that image runs—what ports it should use, how many replicas of the container should run so the service has the capacity it needs, and so on. Scaling a service changes the number of container instances running that piece of software, assigning more computing resources to the service in the process.
+
+使用 `docker-compose.yml` 来定义，运行和配置服务
+
+> `docker rmi $(docker images -q -f dangling=true)`
+
+#### Docker使用过程中的一些命令
+
+`docker ps` / `docker container ls` 查看当前容器列表
+
+`docker image ls` / `docker images` 查看当前镜像列表
+
+`docker build -t imageName .` 建立镜像命令
+
+`docker run -p 4000:80 imageName` 运行容器命令
+
+`docker run -d -p 4000:80 imageName` 后台运行容器命令
+
+`docker container stop containerId` 停止容器命令
+
+`docker swarm init ` 初始化swarm
+
+`docker stack deploy -c docker-compose.yml appName` 建立名为appName 的App Stack，若调整了docker-compose.yml ，也可用该命令进行站点的更新
+
+`docker service ls` 查看当前运行的服务的信息
+
+`docker service ps servicename` 列出当前服务所运行的节点及其状态
+
+`docker stack rm appName` 下线名为appName 的app 
+
+`docker swarm leave --force` 离开Swarm
+
+`docker-machine ls` 列出当前的虚拟机信息
+
+`docker-machine ssh machine_name` 进入名为 machine_name 的虚拟机中，如果无法进行，则使用`docker-machine --native-ssh ssh machine_name`
+
+`docker node ls` 查看当前Swarm的节点信息，需要在Swarm 中执行该命令，否则报错
+
+> 这两个命令和起来很有用，相当于附加到当前的Shell控制台上，可以不进入虚拟机，然后直接操作该虚拟机。
+>
+> `docker-machine env <machine>` 
+>
+> `eval $(docker-machine env <machine>)`
+>
+> get the command to configure your shell to talk to `<machine>`. 
+>
+> eval $(docker-machine env -u) 取消绑定
 
 
 
-
-
-
-
-
-
+> 当镜像是存储在私人Registry上时，这需要 login 然后deploy时加上`--with-registry-auth` 命令
+>
+> `docker login registry.example.com``
+>
+> ``docker stack deploy --with-registry-auth -c docker-compose.yml appName` 
 
 
 
