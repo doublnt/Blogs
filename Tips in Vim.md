@@ -189,3 +189,18 @@
 `:!perl script.pl `执行perl脚本，可以不用退出vim，非常方便。
 
 `:suspend`或`Ctrl - Z` 挂起vim，回到shell，按fg可以返回vim。
+
+
+
+### Linux下Vim 乱码
+
+```shell
+ 编辑~/.vimrc文件，加上如下几行：
+
+   set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
+   set termencoding=utf-8
+   set encoding=utf-8
+```
+
+
+

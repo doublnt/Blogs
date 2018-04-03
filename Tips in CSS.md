@@ -111,3 +111,20 @@ CSS常用小技巧
    > ```html
    > <span class="repu-time">@repu.DateAdded.ToString("yyyy/MM/dd")</span>
    > ```
+
+
+
+10.
+
+> ```javascript
+> var pattern = /([(](\d+)[)])/gm;
+> var match = $(document).attr("title").match(pattern);
+> if (match === null) {
+>     $("title").html(`(${count})${$(document).attr("title")}`);
+> }
+> else if (match[0] !== `(${count})`) {
+>     $("title").html($(document).attr("title").replace(pattern, "(" + count + ")"));
+> }
+> ```
+>
+> 
