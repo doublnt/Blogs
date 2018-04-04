@@ -514,6 +514,17 @@ git merge topic
 
  
 
+### 如何更改文件夹大小写
+
+```shell
+git mv currentDir newDir
+git mv newDir CaseDir
+
+git commit -m ""
+```
+
+
+
 
 
 
