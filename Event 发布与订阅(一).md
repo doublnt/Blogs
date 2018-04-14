@@ -105,3 +105,64 @@ benz.CarNotification += p2.BeginToCar;
 
 上面就是一个简单的发布/订阅的例子，在EventBus中也有其涉及的地方，正好可以了解记录一下。
 
+今天下午又仔细思考了一下，更新了一下实例，如下：
+
+一个车，是被观察者，也就是目标 object，它有一个事件，暂且叫它 发车事件。以及观察者 乘客类。
+
+修改了一下Event代码:
+
+```c#
+using System;
+
+namespace EventDemo {
+    public class MyCar {
+        //定义一个 上车 的委托
+        public delegate void CarHandler (MyCar car);
+
+        //定义一个 上车 委托方法的事件
+        public event CarHandler CarNumberNotification;
+
+        public string Name { get; set; }
+
+        public int Count { get; set; }
+
+        public void RunCar () {
+            Console.WriteLine ($"好的，准备上车了，车名为:{Name}，车上人数:{Count}");
+            if (CarNumberNotification != null) {
+                CarNumberNotification (this);
+            }
+            Console.WriteLine ($"The people now is:{Count}");
+        }
+    }
+}
+```
+
+```c#
+namespace EventDemo {
+    public class Passenger {
+
+        public string Name { get; set; }
+
+        public void BeginToCar (MyCar car) {
+            car.Count++;
+            System.Console.WriteLine ($"我上车了，我是：{Name}，我坐的车是{car.Name}");
+        }
+    }
+}
+```
+
+
+
+```c#
+            MyCar benz = new MyCar { Name = "Benz" };
+
+            Passenger p1 = new Passenger { Name = "xiaoming" };
+            Passenger p2 = new Passenger { Name = "xiaohong" };
+
+            benz.CarNumberNotification += p1.BeginToCar;
+            benz.CarNumberNotification += p2.BeginToCar;
+
+            benz.RunCar ();
+```
+
+这样编写代码更加容易理解一些。
