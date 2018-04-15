@@ -175,3 +175,76 @@ Feedback 类派生自FCL（Framework class library）定义的 System.MulticastD
 下面贴上原书中委托链的状态图（偷个懒，太难画了），
 
 ![](https://ws2.sinaimg.cn/large/006tKfTcgy1fqc8jue1z7j31kw23v7wi.jpg)
+
+
+
+下面给出一个我本地委托测试的小Demo
+
+
+
+Driver.cs
+
+```c#
+using System;
+
+namespace EventDemo.CarDemo {
+    public class Driver {
+        public string Name { get; set; }
+
+        public void DriveCar () {
+            Console.WriteLine ($"I am driver:{Name}");
+        }
+    }
+}
+```
+
+Passenger.cs
+
+```c#
+namespace EventDemo.CarDemo {
+    public class Passenger {
+
+        public string Name { get; set; }
+
+        public void BoardCar () {
+            System.Console.WriteLine ($"我上车了，我是：{Name}");
+        }
+    }
+}
+```
+
+MyCar.cs
+
+```c#
+using System;
+
+namespace EventDemo.CarDemo {
+
+    public delegate void CarHandler ();
+
+    public class MyCar {
+        //定义一个 上车 委托方法的事件
+        public event CarHandler CarNumberNotification;
+
+        public void RunCar () {
+            Console.WriteLine ($"好的，准备上车了！");
+            if (CarNumberNotification != null) {
+                CarNumberNotification ();
+            }
+        }
+    }
+}
+```
+
+Program.cs
+
+```c#
+ //纯委托版本
+CarHandler carHandler = null;
+carHandler += driver.DriveCar;
+carHandler += passenger.BoardCar;
+carHandler.Invoke();
+```
+
+
+
